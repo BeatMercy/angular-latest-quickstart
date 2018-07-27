@@ -16,12 +16,14 @@ import {
 } from '@angular/material';
 import { MercyNavComponent } from './mercy-nav/mercy-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
+import { SideNavMenuComponent } from './side-nav-menu/side-nav-menu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MercyDashboardComponent,
-    MercyNavComponent
+    MercyNavComponent,
+    SideNavMenuComponent
   ],
   imports: [
     BrowserModule,
