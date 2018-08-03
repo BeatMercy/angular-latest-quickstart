@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule} from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
@@ -12,7 +12,9 @@ import {
   MatButtonModule,
   MatToolbarModule,
   MatSidenavModule,
-  MatListModule
+  MatListModule,
+  MatTreeFlattener,
+  MatTreeModule
 } from '@angular/material';
 import { MercyNavComponent } from './mercy-nav/mercy-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -37,7 +39,7 @@ import { SideNavMenuComponent } from './side-nav-menu/side-nav-menu.component';
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-    MatCardModule
+    MatTreeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
