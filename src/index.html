@@ -1,16 +1,39 @@
 <!doctype html>
 <html lang="en">
-<head>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-  <meta charset="utf-8">
-  <title>AngularLatestQuickstart</title>
-  <base href="/">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+  <head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+      rel="stylesheet">
+    <meta charset="utf-8">
+    <title>AngularLatestQuickstart</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+  </head>
+  <body>
+    <app-root>
+      <script src="assets/snap.svg-min.js"></script>
+      <svg style="width: 300px; height: 300px;" id="svg"></svg>
+    </app-root>
+    <script>
+      var s = Snap("#svg");
+      var bigCircle = s.circle(150, 150, 100);
+      bigCircle.attr({
+          fill: "#bada55",
+          stroke: "#000",
+          strokeWidth: 5
+      });
+      var smallCircle = s.circle(100, 150, 70);
+      var discs = s.group(smallCircle, s.circle(200, 150, 70));
+      discs.attr({
+          fill: "#fff"
+      });
+      bigCircle.attr({
+          mask: discs
+      });
+      smallCircle.animate({r: 50}, 1000);
+    </script>
+  </body>
 </html>

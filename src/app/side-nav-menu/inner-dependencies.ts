@@ -27,7 +27,7 @@ export const TREE_DATA = `
       "Documents": {
         "angular": {
           "src": {
-            "core": "ts",
+            "core": {"ts":"4 level node"},
             "compiler": "ts"
           }
         },
@@ -93,7 +93,8 @@ export class FileDatabase {
    */
   buildFileTree(value: any, level: number): FileNode[] {
     const data: any[] = [];
-    for (const k of value) {
+    // tslint:disable-next-line:forin
+    for (const k in value) {
       const v = value[k];
       const node = new FileNode();
       node.filename = `${k}`;

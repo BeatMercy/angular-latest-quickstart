@@ -14,7 +14,8 @@ import {
   MatSidenavModule,
   MatListModule,
   MatTreeModule,
-  MatDividerModule
+  MatDividerModule,
+  MatTreeFlattener,
 } from '@angular/material';
 import { MercyNavComponent } from './mercy-nav/mercy-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -57,7 +58,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy
-    }
+    },
+    MatTreeModule
   ],
   bootstrap: [AppComponent]
 })
