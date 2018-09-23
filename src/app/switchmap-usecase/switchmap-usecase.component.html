@@ -1,7 +1,12 @@
 <div style="padding:10px 20px 0 20px;">
   <h1>{{title}}</h1>
+  <p>Type "backbone" or "angular" in the textfield (or just tying by click the Recurit button)</p>
+  <p>See what's different from the output area.</p>
   <div>
-    <button mat-button color="primary" (click)="clearRecruit()">clear recruit</button>
+    <button mat-button color="primary" (click)="shiftOutput()">SwitchMap {{showSwitchMapEffort?'on':'off'}}</button>
+    <button mat-button color="primary" (click)="fillTextField('backbone')">Recruit Backbone Engineer</button>
+    <button mat-button color="primary" (click)="fillTextField('angular')">Recruit Angular Engineer</button>
+    <mat-divider></mat-divider>
     <br>
     <div style="display: flex;">
       <div style="margin: 0 10px;">
@@ -15,19 +20,22 @@
       </div>
     </div>
   </div>
+  <br>
   <mat-divider></mat-divider>
   <div style="display: flex;">
     <div style="margin: 0 10px;">
-      <h3>original situation</h3>
-      <p *ngFor="let recruit of originalRecruitment">
-        {{recruit}}
-      </p>
+      <ul>
+        <li *ngFor="let item of noSwitchMapResult">
+          {{item}}
+        </li>
+      </ul>
     </div>
     <div style="margin: 0 10px;">
-      <h3>using switchMap</h3>
-      <p *ngFor="let recruit of recruitment$ | async">
-        {{recruit}}
-      </p>
+      <ul>
+        <li *ngFor="let item of switchMapResult">
+          {{item}}
+        </li>
+      </ul>
     </div>
   </div>
 </div>

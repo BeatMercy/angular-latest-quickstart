@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, of, Subscription, BehaviorSubject } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
 import { map } from 'rxjs/operators';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
@@ -16,6 +16,13 @@ import { debounceTime } from 'rxjs/internal/operators/debounceTime';
  */
 export class SwitchmapUsecaseComponent implements OnInit {
   title = 'SwitchMap - USECASE';
+
+  backboneRecruitArrived = new Subject<string>();
+  angularRecruitArrived = new Subject<string>();
+
+  backboneEngineerQueue$ = this.backboneRecruitArrived.asObservable();
+  angularEngineerQueue$ = this.angularRecruitArrived.asObservable();
+
   originalHotFrameworkTweets = new FormControl();
   originalHotFrameworkTweets$ = this.originalHotFrameworkTweets.valueChanges;
   originalRecruitment = [];
@@ -24,60 +31,85 @@ export class SwitchmapUsecaseComponent implements OnInit {
   hotFrameworkTweets$ = this.hotFrameworkTweets.valueChanges;
   recruitment$;
 
-  backboneRecruits = ['backbone1'];
-  angularRecruits = ['angualr1'];
-  backboneAgency$ = of(this.backboneRecruits);
-  angularAgency$ = of(this.angularRecruits);
+  backboneRecruitsAmount = 1;
+  angularRecruitsAmount = 1;
+
+  showSwitchMapEffort = true;
+  switchMapResult: string[];
+  noSwitchMapResult: string[];
   constructor() {
-    /*not using switchMap */
-    let previousSub$: Subscription;
+    /*not using switchMap, and keep subscription on previous observable*/
+
+
+    // let previousSub$: Subscription; // clear the side effort of existing subscription
     this.originalHotFrameworkTweets$.pipe(
       debounceTime(300),
       map(tweet => this.getAgency(tweet)),
     ).subscribe(recruits$ => {
-      if (previousSub$) { previousSub$.unsubscribe(); }
-      previousSub$ = recruits$.subscribe(recruits => this.originalRecruitment = recruits);
+      if (!this.showSwitchMapEffort) {
+        recruits$.subscribe(recruit => this.logResult(recruit));
+      }
+      // if (previousSub$) { previousSub$.unsubscribe(); }
+      // previousSub$ = recruits$.subscribe(recruits => this.originalRecruitment = recruits);
     });
 
     /*using switchMap */
     this.recruitment$ = this.hotFrameworkTweets$.pipe(
       debounceTime(300),
       switchMap(tweet => this.getAgency(tweet))
-    );
+    ).subscribe(recruit => {
+      if (this.showSwitchMapEffort) {
+        this.logResult(recruit);
+      }
+    });
   }
 
   ngOnInit() {
+    this.switchMapResult = [];
+    this.noSwitchMapResult = [];
     // agency recruit staff from everywhere.....
     this.loadRecruit();
   }
 
-  getAgency(type: string): Observable<String[]> {
+  getAgency(type: string): Observable<string> {
     switch (type) {
-      case 'backbone': return this.backboneAgency$;
-      case 'angular': return this.angularAgency$;
-      default: return of([]);
+      case 'backbone': return this.backboneEngineerQueue$;
+      case 'angular': return this.angularEngineerQueue$;
+      default: return of('');
     }
   }
 
-  clearRecruit() {
-    for (let i = 0; i < this.angularRecruits.length; i++) {
-      this.angularRecruits.pop();
-    }
-    for (let i = 0; i < this.backboneRecruits.length; i++) {
-      this.backboneRecruits.pop();
-    }
+  shiftOutput() {
+    this.showSwitchMapEffort = !this.showSwitchMapEffort;
   }
 
+  /**
+   * simulate engineer recruitment....
+   */
   loadRecruit(): void {
     setInterval(() => {
-      if (this.backboneRecruits.length < 20) {
-        this.backboneRecruits.push('backbone' + (this.backboneRecruits.length + 1));
-      }
+      this.backboneRecruitArrived.next('Backbone Engineer No.' + this.backboneRecruitsAmount);
+      this.backboneRecruitsAmount++;
     }, 1000);
     setInterval(() => {
-      if (this.angularRecruits.length < 20) {
-        this.angularRecruits.push('angular' + (this.angularRecruits.length + 1));
-      }
+      this.angularRecruitArrived.next('Angular Engineer No.' + this.angularRecruitsAmount);
+      this.angularRecruitsAmount++;
     }, 600);
+  }
+
+  fillTextField(name: string) {
+    if (this.showSwitchMapEffort) {
+      this.hotFrameworkTweets.setValue(name);
+    } else {
+      this.originalHotFrameworkTweets.setValue(name);
+    }
+  }
+
+  logResult(engineer: string) {
+    if (this.showSwitchMapEffort) {
+      this.switchMapResult.push(engineer);
+    } else {
+      this.noSwitchMapResult.push(engineer);
+    }
   }
 }
