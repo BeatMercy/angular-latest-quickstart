@@ -1,0 +1,33 @@
+<div style="padding:10px 20px 0 20px;">
+  <h1>{{title}}</h1>
+  <div>
+    <button mat-button color="primary" (click)="clearRecruit()">clear recruit</button>
+    <br>
+    <div style="display: flex;">
+      <div style="margin: 0 10px;">
+        <!--Require ReactiveFormsModule -->
+        no SwitchMap: <br><br>
+        <input id="noSwitchMap" type="text" [formControl]="originalHotFrameworkTweets" />
+      </div>
+      <div style="margin: 0 10px;">
+        SwitchMap:<br><br>
+        <input id="useSwitchMap" type="text" [formControl]="hotFrameworkTweets" />
+      </div>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div style="display: flex;">
+    <div style="margin: 0 10px;">
+      <h3>original situation</h3>
+      <p *ngFor="let recruit of originalRecruitment">
+        {{recruit}}
+      </p>
+    </div>
+    <div style="margin: 0 10px;">
+      <h3>using switchMap</h3>
+      <p *ngFor="let recruit of recruitment$ | async">
+        {{recruit}}
+      </p>
+    </div>
+  </div>
+</div>
