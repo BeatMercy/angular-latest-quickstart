@@ -40,14 +40,16 @@ export class SwitchmapUsecaseComponent implements OnInit {
   constructor() {
     /*not using switchMap, and keep subscription on previous observable*/
 
-
     // let previousSub$: Subscription; // clear the side effort of existing subscription
     this.originalHotFrameworkTweets$.pipe(
       debounceTime(300),
       map(tweet => this.getAgency(tweet)),
     ).subscribe(recruits$ => {
       if (!this.showSwitchMapEffort) {
-        recruits$.subscribe(recruit => this.logResult(recruit));
+        recruits$.subscribe(recruit => this.logResult(recruit), error => { }, () => {
+          console.log(`finish !!!`);
+
+        });
       }
       // if (previousSub$) { previousSub$.unsubscribe(); }
       // previousSub$ = recruits$.subscribe(recruits => this.originalRecruitment = recruits);
